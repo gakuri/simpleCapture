@@ -2,10 +2,23 @@ Imports System.Drawing
 Imports System.Drawing.Imaging
 Imports System.IO
 Imports System.Windows.Forms
+Imports System.Runtime.InteropServices
 
 Module ScreenCapture
+    <DllImport("user32.dll")>
+    Public Function SetProcessDPIAware() As Boolean
+    End Function
+
+    ' Windows API: GetDpiForWindowをインポート
+    <DllImport("user32.dll")>
+    Private Function GetDpiForWindow(ByVal hWnd As IntPtr) As UInteger
+    End Function
 
     Sub Main()
+
+        ' DPI対応を無効化（スケーリングを無視）
+        SetProcessDPIAware()
+
         ' すべてのスクリーンのサイズを合計して、キャプチャ用ビットマップを作成
         Dim totalWidth As Integer = 0
         Dim totalHeight As Integer = 0
@@ -26,7 +39,7 @@ Module ScreenCapture
         Next
 
         ' 日時形式を設定（yyyymmdd_hhnn）
-        Dim timestamp As String = DateTime.Now.ToString("yyyyMMdd_HHmm")
+        Dim timestamp As String = DateTime.Now.ToString("yyyyMMdd_HHmmss")
 
         ' ファイルパスを設定（例: C:\Screenshots\20241013_1130.jpg）
         Dim savePath As String = Path.Combine("C:\Screenshots", timestamp & ".jpg")
