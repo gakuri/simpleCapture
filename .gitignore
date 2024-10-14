@@ -6,3 +6,4 @@ obj/
 .vs/
 .vscode/
 simpleCapture/My Project/
+/simpleCapture/*.user
